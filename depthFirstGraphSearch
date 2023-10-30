@@ -1,0 +1,48 @@
+class Vertex:
+    def __init__(self, color, pi, value):
+        self.color = color
+        self.pi = pi
+        self.value = value
+
+    def __repr__(self):
+        return f"{type(self).__name__}(color={self.color}, pi={self.pi}, value={self.value})"
+
+Vertices = ['a', 'b', 'c', 'd', 'e', 'f']
+
+edges = [['a', 'b'], ['b', 'c'], ['a', 'd'], ['d', 'e'], ['a', 'f']]
+
+for edge in edges:
+    edge[0] = Vertex('white', None, edge[0])
+    edge[1] = Vertex('white', None, edge[1])
+
+for i in range(len(Vertices)):
+    Vertices[i] = Vertex('white', None, Vertices[i])
+
+def DFS(V, exV, Edges):
+    for vertex in V:
+        if vertex.color == 'white':
+            DFS_Visit(V, vertex, Edges)
+
+def DFS_Visit(Vices, Vex, E):
+    Vex.color = 'gray'
+    adjacentVertices = adj(Vex, E)
+    for v in adjacentVertices:
+        if v.color == 'white':
+            v.pi = Vex
+            DFS_Visit(Vices, v, E)
+    Vex.color = 'black'
+
+def adj(u, Edg):
+    A = []
+    for edge in Edg:
+        if u.value == edge[0].value:
+            A.append(edge[1])
+        elif u.value == edge[1].value:
+            A.append(edge[0])
+    return A
+
+DFS(Vertices, exploredVertices, edges)
+
+# Print the colors of vertices after the DFS
+for vertex in Vertices:
+    print(f"{vertex.value}: {vertex.color}")
